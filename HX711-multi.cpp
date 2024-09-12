@@ -69,6 +69,7 @@ bool HX711MULTI::tare(byte times, uint16_t tolerance) {
 	int i,j;
 
 	long values[COUNT];
+	long avgvalues[COUNT];
 
 	long minValues[COUNT];
 	long maxValues[COUNT];
@@ -85,10 +86,12 @@ bool HX711MULTI::tare(byte times, uint16_t tolerance) {
 		for (j=0; j<COUNT; ++j) {
 			if (values[j]<minValues[j]) {
 				minValues[j]=values[j];
+				
 			}	
 			if (values[j]>maxValues[j]) {
 				maxValues[j]=values[j];
 			} 
+			avgvalues[j]+=values[j];
 		}		
 	}
 
@@ -109,13 +112,13 @@ bool HX711MULTI::tare(byte times, uint16_t tolerance) {
 
 	//set the offsets
 	for (i=0; i<COUNT; ++i) {
-		OFFSETS[i] = values[i];
+		OFFSETS[i] = (avgvalues[i]-minValues[j]-maxValues[j])/(times -2 );
 	}
 	return true;
 
 }
 
-//reads from all cahnnels and sets the values into the passed long array pointer (which must have at least 'count' cells allocated)
+//reads from all chanels and sets the values into the passed long array pointer (which must have at least 'count' cells allocated)
 //if you are only reading to toggle the line, and not to get values (such as in the case of setting gains) you can pass NULL.
 void HX711MULTI::read(long *result) {
     
