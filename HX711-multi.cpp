@@ -27,6 +27,7 @@ HX711MULTI::HX711MULTI(byte count, byte dout[], byte pd_sck, byte gain) {
 	}
 	
 }
+//___________________________________________________________________________________________________________________________
 
 HX711MULTI::~HX711MULTI() {
 	free(OFFSETS);
@@ -41,6 +42,7 @@ bool HX711MULTI::is_ready() {
 	}
 	return result;
 }
+//___________________________________________________________________________________________________________________________
 
 void HX711MULTI::set_gain(byte gain) {
 
@@ -59,6 +61,7 @@ void HX711MULTI::set_gain(byte gain) {
 	digitalWrite(PD_SCK, LOW);
 	read(); //a read is needed to get gain setting to come into effect. (for the next read)
 }
+//___________________________________________________________________________________________________________________________
 
 byte HX711MULTI::get_count() {
 	return COUNT;
@@ -66,6 +69,7 @@ byte HX711MULTI::get_count() {
 
 //TODO: write a function / state variable that 'learns' (stores/tracks) the expected noise figure from the cells, and automatically selects a reasonable 'tolerance' for tare.
 //		i.e. a 'best recently seen stability'. Keep it up-to-date automatically by updating it with every read. (reads will probably need to be time-aware)
+//___________________________________________________________________________________________________________________________
 
 bool HX711MULTI::tare(byte times, uint16_t tolerance) {
 	//TODO: change this implementation to use a smarter read strategy. 
@@ -127,6 +131,7 @@ bool HX711MULTI::tare(byte times, uint16_t tolerance) {
 	return true;
 
 }
+//___________________________________________________________________________________________________________________________
 
 //reads from all chanels and sets the values into the passed long array pointer (which must have at least 'count' cells allocated)
 //if you are only reading to toggle the line, and not to get values (such as in the case of setting gains) you can pass NULL.
@@ -141,7 +146,7 @@ void HX711MULTI::read(long *result) {
 		}
 	}
 }
-
+//___________________________________________________________________________________________________________________________
 
 void HX711MULTI::readRaw(long* result) {
 	int i,j;
@@ -182,15 +187,18 @@ void HX711MULTI::readRaw(long* result) {
 
     }
 }
+//___________________________________________________________________________________________________________________________
 
 void HX711MULTI::setDebugEnable(bool debugEnable) {
 	debugEnabled = debugEnable;
 }
+//___________________________________________________________________________________________________________________________
 
 void HX711MULTI::power_down() {
 	digitalWrite(PD_SCK, LOW);
 	digitalWrite(PD_SCK, HIGH);
 }
+//___________________________________________________________________________________________________________________________
 
 void HX711MULTI::power_up() {
 	digitalWrite(PD_SCK, LOW);

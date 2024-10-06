@@ -26,7 +26,7 @@ class HX711MULTI
 		// channel selection is made by passing the appropriate gain: 128 or 64 for channel A, 32 for channel B
 		// count: the number of channels
 		// dout: an array of pin numbers, of length 'count', one entry per channel
-		HX711MULTI(byte count, byte *dout, byte pd_sck, byte gain = 128);
+		HX711MULTI(byte count, byte* dout, byte pd_sck, byte gain = 128);
 
 		virtual ~HX711MULTI();
 
