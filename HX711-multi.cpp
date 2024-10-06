@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <HX711-multi.h>
+//____________________________________________________________________________________________________________________
 
 HX711MULTI::HX711MULTI(byte count, byte dout[], byte pd_sck, byte gain) {
 	PD_SCK 	= pd_sck;
@@ -15,7 +16,7 @@ HX711MULTI::HX711MULTI(byte count, byte dout[], byte pd_sck, byte gain) {
 	set_gain(gain);
 
 	OFFSETS = (long*) malloc(COUNT*sizeof(long));
-	
+
 	if (!OFFSETS) {
 		if (debugEnabled) Serial << "Malloc error" << endl;
 	}
@@ -25,12 +26,14 @@ HX711MULTI::HX711MULTI(byte count, byte dout[], byte pd_sck, byte gain) {
 			OFFSETS[i] = 0;
 		}
 	}
-	
+
 }
+//____________________________________________________________________________________________________________________
 
 HX711MULTI::~HX711MULTI() {
 	free(OFFSETS);
 }
+//____________________________________________________________________________________________________________________
 
 bool HX711MULTI::is_ready() { 
 	bool result = true;
@@ -41,6 +44,7 @@ bool HX711MULTI::is_ready() {
 	}
 	return result;
 }
+//____________________________________________________________________________________________________________________
 
 void HX711MULTI::set_gain(byte gain) {
 
@@ -59,10 +63,12 @@ void HX711MULTI::set_gain(byte gain) {
 	digitalWrite(PD_SCK, LOW);
 	read(); //a read is needed to get gain setting to come into effect. (for the next read)
 }
+//____________________________________________________________________________________________________________________
 
 byte HX711MULTI::get_count() {
 	return COUNT;
 }
+//____________________________________________________________________________________________________________________
 
 //TODO: write a function / state variable that 'learns' (stores/tracks) the expected noise figure from the cells, and automatically selects a reasonable 'tolerance' for tare.
 //		i.e. a 'best recently seen stability'. Keep it up-to-date automatically by updating it with every read. (reads will probably need to be time-aware)
@@ -127,9 +133,10 @@ bool HX711MULTI::tare(byte times, uint16_t tolerance) {
 	return true;
 
 }
+//____________________________________________________________________________________________________________________
 
-//reads from all chanels and sets the values into the passed long array pointer (which must have at least 'count' cells allocated)
-//if you are only reading to toggle the line, and not to get values (such as in the case of setting gains) you can pass NULL.
+	//reads from all chanels and sets the values into the passed long array pointer (which must have at least 'count' cells allocated)
+	//if you are only reading to toggle the line, and not to get values (such as in the case of setting gains) you can pass NULL.
 void HX711MULTI::read(long *result) {
     
     readRaw(result);
@@ -141,7 +148,7 @@ void HX711MULTI::read(long *result) {
 		}
 	}
 }
-
+//____________________________________________________________________________________________________________________
 
 void HX711MULTI::readRaw(long* result) {
 	int i,j;
@@ -182,16 +189,20 @@ void HX711MULTI::readRaw(long* result) {
 
     }
 }
+//____________________________________________________________________________________________________________________
 
 void HX711MULTI::setDebugEnable(bool debugEnable) {
 	debugEnabled = debugEnable;
 }
+//____________________________________________________________________________________________________________________
 
 void HX711MULTI::power_down() {
 	digitalWrite(PD_SCK, LOW);
 	digitalWrite(PD_SCK, HIGH);
 }
+//____________________________________________________________________________________________________________________
 
 void HX711MULTI::power_up() {
 	digitalWrite(PD_SCK, LOW);
 }
+//____________________________________________________________________________________________________________________
